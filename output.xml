@@ -1,0 +1,16 @@
+<settings>
+  <settings>
+    <setting id="invalid_psg_directions_callback">psgdirectioncallback</setting>
+    <setting id="di_halt_callback">dihaltcallback</setting>
+    <setting id="default_machine">Panasonic_FS-A1GT</setting>
+    <setting id="horizontal_stretch">320.0</setting>
+    <setting id="scanline">10</setting>
+    <setting id="deflicker">true</setting>
+    <setting id="deinterlace">false</setting>
+    <setting id="fullspeedwhenloading">true</setting>
+    <setting id="keyjoystick1.up">a</setting>
+    <setting id="scale_factor">dicks</setting>
+    <setting id="fullscreen">cocks</setting>
+  </settings>
+  <bindings />
+</settings>
