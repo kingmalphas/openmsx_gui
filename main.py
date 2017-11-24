@@ -1,24 +1,22 @@
 import xml.etree.ElementTree as ET  #
 
-#openmsx_settings_path = "/home/Jul/.openMSX/share/settingsBU.xml"
-openmsx_settings_path = "output.xml"
-
-tree = ET.parse(openmsx_settings_path)
-root = tree.getroot()
-
 ## the class ChangeASetting needs the attributevalue and the element name it should be changed to
 
 class ChangeASetting:
-    def __init__(self, settings, new_element):
+    def __init__(self, path, settings=None, new_element=None ):
         self.settings = settings
         self.new_element = new_element
+        self.tree = ET.parse(path)
+        self.root = self.tree.getroot()
+
 
     def get_settinglist(self):
         my_dict = {}
-        for setting in root.iter('setting'):  # iterates through the settings list
+        for setting in self.root.iter('setting'):  # iterates through the settings list
             element = setting.text  # get the element name of the attribute
             attribute = setting.attrib['id']  # get the attribute values  associated with the attribute name 'id'
             my_dict.update({attribute: element})  # add the attribute to the dicts key and the element to the value
+        #print(my_dict)
         return my_dict
 
 
@@ -28,25 +26,30 @@ class ChangeASetting:
         for i in settinglist.keys():
             if i == self.settings:
                 return_value = (True, settinglist[i])
-                print('found ', self.settings, settinglist[i])
+                print('setting:', self.settings, ('| element:'),settinglist[i])
+        if return_value == (False, None):
+            print('setting not found')
         return return_value
 
+
     def change_setting(self):
-        if self.check_setting()[0] == True:
-           for settin in root.iter('setting'):
-               if settin.attrib['id'] == self.settings:
-                   settin.text = (self.new_element)
-                   settin.set('id', self.settings)
-                   tree.write('output.xml')
-                   print('Element of the value ', self.settings, 'changed to ', self.new_element)
+        if self.new_element is not None:
+            if self.check_setting()[0] == True:
+               for settin in self.root.iter('setting'):
+                   if settin.attrib['id'] == self.settings:
+                       settin.text = (self.new_element)
+                       settin.set('id', self.settings)
+                       self.tree.write('output.xml')
+                       print(self.settings, 'has been changed to', self.new_element)
+            elif self.settings==None:
+                print('missing the setting you want to change')
+            elif self.new_element==None:
+                print('missing a new element')
+            else:
+                print('irgendwas anderes stimmt nicht')
         else:
-           print('setting not available ')
+            print('missing argument')
 
+#my_path = '/home/Jul/.openMSX/share/settingsBU.xml'
+#ChangeASetting(my_path).get_settinglist()
 
-
-ChangeASetting('scale_factor', 'dicks').change_setting()
-ChangeASetting('fullscreen', 'cocks').change_setting()
-
-#print(bla.get_settinglist())
-#print(bla.check_setting())
-#print(bla.change_setting())
