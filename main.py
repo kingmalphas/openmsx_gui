@@ -1,6 +1,6 @@
 import subprocess
 import xml.etree.ElementTree as ET
-import ControllerInput as ci
+import controller_input as ci
 
 
 class Xml_io:
