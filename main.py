@@ -58,12 +58,11 @@ class Xml_io:
 class Runtime_io:
     def __init__(self):
         self.process = subprocess.Popen(
-            ["openmsx -control stdio"],
+            ['openmsx', '-control', 'stdio'],
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            universal_newlines=True,
-            shell=True)
+            universal_newlines=True)
 
     def run_omsx(self, xml_settings_path=None):
         """reads the openmsx xml setting and runs openmsx
