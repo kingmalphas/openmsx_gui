@@ -64,25 +64,28 @@ class Runtime_io:
             stderr=subprocess.STDOUT,
             universal_newlines=True)
 
+    def run_command(self, command_string):
+        cmd = ET.Element('command')
+        cmd.text = command_string
+        self.proc.stdin.write(ET.tostring(cmd))
+        self.proc.stdin.flush()
+
     def run_omsx(self, xml_settings_path=None):
         """reads the openmsx xml setting and runs openmsx
            using these settings + somemore like"""
 
         # TODO make rom path configurable
         rom = '/home/Jul/Downloads/MSX_Roms/MetalGear1(J).mx2'
-        self.process.stdin.write('<command>set renderer SDL</command>')
-        self.process.stdin.write('<command>set power true</command>')
-        self.process.stdin.write('<command>carta {}</command>'.format(rom))
-        self.process.stdin.write('<command>reset</command>')
-        self.process.stdin.flush()
+        self.run_command('set renderer SDL')
+        self.run_command('set power true')
+        self.run_command('carta {}'.format(rom))
+        self.run_command('reset')
 
         if xml_settings_path is not None:
             malist = Xml_io(xml_settings_path).read_setting()
             for key in malist:
-                self.process.stdin.write(
-                    '<command>set {key} {element}</command>'.format(
-                        key=key, element=malist[key]))
-                self.process.stdin.flush()
+                cmd = 'set {key} {element}'
+                self.run_command(cmd.format(key=key, element=malist[key]))
 
     def get_output(self):
         update_types = [
@@ -91,9 +94,7 @@ class Runtime_io:
         ]
 
         for ut in update_types:
-            self.process.stdin.write('<command>openmsx_update enable ' + ut +
-                                     ' </command>')
-            self.process.stdin.flush()
+            self.run_command('openmsx_update enable ' + ut)
         while True:
             line = self.process.stdout.readline()
             print(line)
@@ -103,17 +104,13 @@ class Runtime_io:
     def set_on_runtime(self, setting=None, new_element=None,
                        use_only_set=True):
         if use_only_set == True:
-            mystring = str('<command>set ' + setting + ' ' + new_element +
-                           '</command>')
+            mystring = str('set ' + setting + ' ' + new_element)
             print(mystring)
-            self.process.stdin.write(mystring)
-            self.process.stdin.flush()
+            self.run_command(mystring)
         if use_only_set == False:
-            mystring = str('<command>' + setting + ' ' + new_element +
-                           '</command>')
+            mystring = str(setting + ' ' + new_element)
             print(mystring)
-            self.process.stdin.write(mystring)
-            self.process.stdin.flush()
+            self.run_command(mystring)
 
     def change_control(self, msx_input, joystick='joystick1'):
         hats = {
