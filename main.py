@@ -2,7 +2,6 @@ import subprocess
 import xml.etree.ElementTree as ET
 import ControllerInput as ci
 
-proc = subprocess.Popen(["openmsx -control stdio"], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
 
 class Xml_io:
 
@@ -56,11 +55,9 @@ class Xml_io:
 class Runtime_io:
 
     def __init__(self):
-        self.process = proc
-
+        self.process = subprocess.Popen(["openmsx -control stdio"], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
 
     def run_omsx(self, xml_settings_path = None):  # reads the openmsx xml setting and runs openmsx using these settings + somemore like
-
         self.process.stdin.write('<command>set renderer SDL</command>')
         self.process.stdin.write('<command>set power true</command>')
         self.process.stdin.write('<command>carta /home/Jul/Downloads/MSX_Roms/MetalGear1(J).mx2 </command>')
@@ -174,4 +171,5 @@ class Runtime_io:
         self.process.stdin.flush()
 
 
-Runtime_io().run_omsx()
+if __name__ == '__main__':
+    Runtime_io().run_omsx()
