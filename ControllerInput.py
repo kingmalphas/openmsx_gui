@@ -10,6 +10,8 @@ def get_controller_input():
     done = False
     buttons = joystick.get_numbuttons()
     hats = joystick.get_numhats()
+    axes = joystick.get_numaxes()
+
     print('wainting for input')
     while done == False:
         # EVENT PROCESSING STEP
@@ -20,6 +22,7 @@ def get_controller_input():
                     inp = i
                     pygame.quit()
                     return inp
+
             for i in range(hats):
                 hat = joystick.get_hat(i)
                 if str(hat) != '(0, 0)':
@@ -27,6 +30,11 @@ def get_controller_input():
                     pygame.quit()
                     return inp
 
+            for i in range(axes):
+                button = joystick.get_axis(i)
+                if button != 0.0:
+                    inp = [i, button]
+                    pygame.quit()
+                    return inp
 
-
-#print(get_controller_input())
+#print (get_controller_input())

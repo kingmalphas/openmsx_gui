@@ -1,0 +1,31 @@
+bind "joy1 button9 up" -layer mylayer "keymatrix 6 0x40"
+unbind -layer mylayer "joy1 button9 up"
+
+activate_input_layer mylayer
+deactivate_input_layer mylayer
+
+bind "joy1 button8 up" "keymatrixup 6 0x40"
+bind "joy1 Button0 up" "keymatrixup 3 0x80"
+
+#print(proc())
+#Runtime_io().run_omsx()
+#Runtime_io().get_output()
+#Runtime_io().set_on_runtime('scale_factor', '2')
+#Runtime_io().set_on_runtime('fullscreen', 'false')
+
+#<command> openmsx_update enable led </command>
+#'<command>save</command>'
+#'<command>set renderer SDL</command>'
+#'<command>set scale_factor 1</command>'
+
+#my_path = '/home/Jul/.openMSX/share/settingsBU.xml'
+
+#xml_io(my_path).change_setting(setting = 'fullscreen',new_element='cocks')
+#xml_io(my_path).check_setting('fullscreen')
+#<command> dict lappend joystick1_config LEFT L_hat0 </command>
+#<command> dict lappend joystick1_config RIGHT R_hat0 </command>
+#<command> dict lappend joystick1_config UP U_hat0 </command>
+#<command> dict lappend joystick1_config DOWN D_hat0 </command>
+
+
+

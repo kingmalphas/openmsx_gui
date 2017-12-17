@@ -1,46 +1,45 @@
-import pygame
+import subprocess
+import xml.etree.ElementTree as ET
+import ControllerInput as ci
+
+proc = subprocess.Popen(["openmsx -control stdio"], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
+
+class Runtime_io:
+
+    def __init__(self):
+        self.process = proc
 
 
-def get_controller_input():
-    pygame.init()
-    pygame.joystick.init()
-    joystick = pygame.joystick.Joystick(0)
-    joystick.init()
+    def run_omsx(self, xml_settings_path = None):  # reads the openmsx xml setting and runs openmsx using these settings + somemore like
 
-    done = False
-    buttons = joystick.get_numbuttons()
-    hats = joystick.get_numhats()
-    analogs = joystick.get_numaxes()
-    print(analogs)
-    print('wainting for input')
-    while done == False:
-        # EVENT PROCESSING STEP
-        for event in pygame.event.get():  # User did something
-            for i in range(buttons):
-                button = joystick.get_button(i)
-                if button == 1:
-                    inp = i
-                    pygame.quit()
-                    return inp
-            for i in range(hats):
-                hat = joystick.get_hat(i)
-                if str(hat) != '(0, 0)':
-                    inp = hat
-                    pygame.quit()
-                    return inp
-            for i in range(analogs):
-                analog = joystick.get_axis(i)
-                print(analog)
-                #pygame.quit()
+        self.process.stdin.write('<command>set renderer SDL</command>')
+        self.process.stdin.write('<command>set power true</command>')
+        self.process.stdin.write('<command>carta /home/Jul/Downloads/MSX_Roms/MetalGear1(J).mx2 </command>')
+        self.process.stdin.write('<command>reset</command>')
+        self.process.stdin.flush()
+
+        if xml_settings_path is not None:
+            malist = Xml_io(xml_settings_path).read_setting()
+            for key in malist:
+                #print ((key,    malist[key]))
+                self.process.stdin.write('<command>set {key} {element}</command>'.format(key=key, element=malist[key]))
+                self.process.stdin.flush()
 
 
+    def get_output(self):
+        update_types = ['led', 'media', 'plug', 'unplug', 'setting', 'setting-info', 'status',]
 
-print(get_controller_input())
+        for ut in update_types:
+            print (type)
+            self.process.stdin.write('<command>openmsx_update enable '+ut+' </command>')
+            self.process.stdin.flush()
+        while True:
+            line = self.process.stdout.readline()
+            print(line)
+            self.process.stdout.flush()
+            if not line:
+                break
 
 
-<command> bind "joy1 button9 up" "keymatrixup 6 0x20" </command>
-#<command> dict lappend joystick1_config DOWN D_hat0 </command>
-
-#
-
-
+Runtime_io().run_omsx()
+Runtime_io().get_output()
