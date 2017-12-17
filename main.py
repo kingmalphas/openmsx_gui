@@ -32,6 +32,9 @@ class Xml_io:
         return return_value
 
     def change_setting(self, setting=None, new_element=None):
+        # TODO refactor using guard clause
+        # https://testing.googleblog.com/2017/06/code-health-reduce-nesting-reduce.html
+
         if new_element is not None and setting is not None:
             print(self.check_setting(setting)[0])
             if self.check_setting(setting)[0] == True:
