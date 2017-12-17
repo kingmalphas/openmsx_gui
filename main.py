@@ -67,11 +67,12 @@ class Runtime_io:
     def run_omsx(self, xml_settings_path=None):
         """reads the openmsx xml setting and runs openmsx
            using these settings + somemore like"""
+
+        # TODO make rom path configurable
+        rom = '/home/Jul/Downloads/MSX_Roms/MetalGear1(J).mx2'
         self.process.stdin.write('<command>set renderer SDL</command>')
         self.process.stdin.write('<command>set power true</command>')
-        self.process.stdin.write(
-            '<command>carta /home/Jul/Downloads/MSX_Roms/MetalGear1(J).mx2 </command>'
-        )
+        self.process.stdin.write('<command>carta {}</command>'.format(rom))
         self.process.stdin.write('<command>reset</command>')
         self.process.stdin.flush()
 
