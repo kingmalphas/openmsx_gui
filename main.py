@@ -20,9 +20,8 @@ class Xml_io:
             my_dict.update({attribute: element})
         return my_dict
 
-    def check_setting(
-            self,
-            settings=None):  # checks the list for a specific attribute Value
+    def check_setting(self, settings=None):
+        """checks the list for a specific attribute Value"""
         return_value = (False, None)
         settinglist = self.read_setting()
         for i in settinglist.keys():
