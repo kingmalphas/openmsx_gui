@@ -172,6 +172,9 @@ class Runtime_io:
             if not line: break
 
     def set_on_runtime(self, setting, new_element, use_only_set=True):
+        # TODO why does this function got `use_only_set`?
+        # 1. the default is true but it is only called with =False
+        # 2. it is only called with =False, why is the option there at all?
         cmd = setting + ' ' + new_element
         if use_only_set:
             cmd = 'set ' + cmd
