@@ -92,6 +92,9 @@ class Xml_io:
 
     def check_setting(self, settings=None):
         """checks the list for a specific attribute Value"""
+        # TODO naming:
+        # settings is plural but it seems to be a string refering one setting
+        # settinglist is called list but is not a list :|
         return_value = (False, None)
         settinglist = self.read_setting()
         for i in settinglist.keys():
