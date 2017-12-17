@@ -103,13 +103,9 @@ class Runtime_io:
 
     def set_on_runtime(self, setting=None, new_element=None,
                        use_only_set=True):
-        if use_only_set == True:
-            mystring = str('set ' + setting + ' ' + new_element)
-            print(mystring)
-            self.run_command(mystring)
-        if use_only_set == False:
-            mystring = str(setting + ' ' + new_element)
-            print(mystring)
+        cmd = setting + ' ' + new_element
+        if use_only_set:
+            cmd = 'set ' + cmd
             self.run_command(mystring)
 
     def change_control(self, msx_input, joystick='joystick1'):
