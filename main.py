@@ -101,8 +101,7 @@ class Runtime_io:
             self.process.stdout.flush()
             if not line: break
 
-    def set_on_runtime(self, setting=None, new_element=None,
-                       use_only_set=True):
+    def set_on_runtime(self, setting, new_element, use_only_set=True):
         cmd = setting + ' ' + new_element
         if use_only_set:
             cmd = 'set ' + cmd
