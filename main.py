@@ -2,6 +2,76 @@ import subprocess
 import xml.etree.ElementTree as ET
 import controller_input as ci
 
+MATRIX = {
+    '7': '0 0x80',
+    ':': '1 0x80',
+    'b': '2 0x80',
+    'j': '3 0x80',
+    'r': '4 0x80',
+    'z': '5 0x80',
+    'F3': '6 0x80',
+    'RETURN': '7 0x80',
+    '6': '0 0x40',
+    ']': '1 0x40',
+    'a': '2 0x40',
+    'i': '3 0x40',
+    'q': '4 0x40',
+    'y': '5 0x40',
+    'F2': '6 0x40',
+    'SELECT': '7 0x40',
+    '5': '0 0x20',
+    '[': '1 0x20',
+    'dead': '2 0x20',
+    'h': '3 0x20',
+    'p': '4 0x20',
+    'x': '5 0x20',
+    'F1': '6 0x20',
+    'BS': '7 0x20',
+    '4': '0 0x10',
+    '\\': '1 0x10',
+    '/': '2 0x10',
+    'g': '3 0x10',
+    'o': '4 0x10',
+    'w': '5 0x10',
+    'CODE': '6 0x10',
+    'STOP': '7 0x10',
+    '3': '0 0x08',
+    '=': '1 0x08',
+    '.': '2 0x08',
+    'f': '3 0x08',
+    'n': '4 0x08',
+    'v': '5 0x08',
+    'CAP': '6 0x08',
+    'TAB': '7 0x08',
+    'DEL': '8 0x08',
+    '2': '0 0x04',
+    '-': '1 0x04',
+    ',': '2 0x04',
+    'e': '3 0x04',
+    'm': '4 0x04',
+    'u': '5 0x04',
+    'GRAPH': '6 0x04',
+    'ESC': '7 0x04',
+    'INS': '8 0x04',
+    '1': '0 0x02',
+    '9': '1 0x02',
+    '~': '2 0x02',
+    'd': '3 0x02',
+    'l': '4 0x02',
+    't': '5 0x02',
+    'CTRL': '6 0x02',
+    'F5': '7 0x02',
+    'HOME': '8 0x02',
+    '0': '0 0x01',
+    '8': '1 0x01',
+    '"': '2 0x01',
+    'c': '3 0x01',
+    'k': '4 0x01',
+    's': '5 0x01',
+    'SHIFT': '6 0x01',
+    'F4': '7 0x01',
+    'SPACE': '8 0x01'
+}
 
 class Xml_io:
     def __init__(self, path):
@@ -140,96 +210,25 @@ class Runtime_io:
 
     def change_keyboard(self, key_press, layer, joystick="joy1"):
         ############### missing joystick selection ###############
-        matrix = {
-            '7': '0 0x80',
-            ':': '1 0x80',
-            'b': '2 0x80',
-            'j': '3 0x80',
-            'r': '4 0x80',
-            'z': '5 0x80',
-            'F3': '6 0x80',
-            'RETURN': '7 0x80',
-            '6': '0 0x40',
-            ']': '1 0x40',
-            'a': '2 0x40',
-            'i': '3 0x40',
-            'q': '4 0x40',
-            'y': '5 0x40',
-            'F2': '6 0x40',
-            'SELECT': '7 0x40',
-            '5': '0 0x20',
-            '[': '1 0x20',
-            'dead': '2 0x20',
-            'h': '3 0x20',
-            'p': '4 0x20',
-            'x': '5 0x20',
-            'F1': '6 0x20',
-            'BS': '7 0x20',
-            '4': '0 0x10',
-            '\\': '1 0x10',
-            '/': '2 0x10',
-            'g': '3 0x10',
-            'o': '4 0x10',
-            'w': '5 0x10',
-            'CODE': '6 0x10',
-            'STOP': '7 0x10',
-            '3': '0 0x08',
-            '=': '1 0x08',
-            '.': '2 0x08',
-            'f': '3 0x08',
-            'n': '4 0x08',
-            'v': '5 0x08',
-            'CAP': '6 0x08',
-            'TAB': '7 0x08',
-            'DEL': '8 0x08',
-            '2': '0 0x04',
-            '-': '1 0x04',
-            ',': '2 0x04',
-            'e': '3 0x04',
-            'm': '4 0x04',
-            'u': '5 0x04',
-            'GRAPH': '6 0x04',
-            'ESC': '7 0x04',
-            'INS': '8 0x04',
-            '1': '0 0x02',
-            '9': '1 0x02',
-            '~': '2 0x02',
-            'd': '3 0x02',
-            'l': '4 0x02',
-            't': '5 0x02',
-            'CTRL': '6 0x02',
-            'F5': '7 0x02',
-            'HOME': '8 0x02',
-            '0': '0 0x01',
-            '8': '1 0x01',
-            '"': '2 0x01',
-            'c': '3 0x01',
-            'k': '4 0x01',
-            's': '5 0x01',
-            'SHIFT': '6 0x01',
-            'F4': '7 0x01',
-            'SPACE': '8 0x01'
-        }
-
         controller_input = (ci.get_controller_input())
 
         if type(controller_input) != list:
             controller_input = str(controller_input)
             settingup = str('bind "joy1 button' + controller_input +
                             ' up" -layer ' + layer)
-            new_elementup = str('"keymatrixup ' + matrix[key_press] + '"')
+            new_elementup = str('"keymatrixup ' + MATRIX[key_press] + '"')
             settingdown = str('bind "joy1 button' + controller_input +
                               ' down" -layer ' + layer)
-            new_elementdown = str('"keymatrixdown ' + matrix[key_press] + '"')
+            new_elementdown = str('"keymatrixdown ' + MATRIX[key_press] + '"')
             self.set_on_runtime(settingup, new_elementup, use_only_set=False)
             self.set_on_runtime(
                 settingdown, new_elementdown, use_only_set=False)
 
         else:
-            setting = str('dict set ' + joystick + '_config ' + matrix[
+            setting = str('dict set ' + joystick + '_config ' + MATRIX[
                 key_press])
-            new_elementup = str('"keymatrixup ' + matrix[key_press] + '"')
-            new_elementdown = str('"keymatrixup ' + matrix[key_press] + '"')
+            new_elementup = str('"keymatrixup ' + MATRIX[key_press] + '"')
+            new_elementdown = str('"keymatrixup ' + MATRIX[key_press] + '"')
 
             axis = str(controller_input[0])
             value = str(int(controller_input[1]))
